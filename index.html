@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Rose</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      text-align: center;
+      color: #fff;
+      font-family: "Georgia", serif;
+      font-size: 1.0rem;
+      line-height: 1.8;
+      padding: 20px;
+      transition: background 2s ease-in-out;
+    }
+
+    .hidden {
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+
+    #message {
+      max-width: 700px;
+      display: none;
+      white-space: pre-wrap;
+      margin-top: 20px;
+    }
+
+    .signature {
+      font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+      font-size: 2.5rem;
+      margin-top: 12px;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: black;
+      cursor: pointer;
+      z-index: 10;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .rose-bg {
+      background: url('rose.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" onclick="revealRose()"></div>
+
+  <div id="message"></div>
+
+  <script>
+    const fullMessage = [
+      "Happy birthday! May your beautiful day bring you joy, health, and the fulfillment of your dearest wishes.",
+      "Like a rose in bloom, each year is another chance to grow and shine even more beautifully.",
+      "My feeling is truly real. This rose is beautiful, yet it shall wither in time. Still, it may bloom eternal within your heart if only you let it grow there.",
+    ];
+
+    const signatureText = "— ask";
+    const container = document.getElementById("message");
+
+    function revealRose() {
+      document.querySelector(".overlay").classList.add("fade-out");
+      document.body.classList.add("rose-bg");
+
+      setTimeout(() => {
+        container.style.display = "block";
+        typeWriter(0);
+      }, 1500);
+    }
+
+    function typeWriter(index) {
+      if (index < fullMessage.length) {
+        let charIndex = 0;
+        const paragraph = document.createElement("p");
+        container.appendChild(paragraph);
+
+        function typeChar() {
+          if (charIndex < fullMessage[index].length) {
+            paragraph.textContent += fullMessage[index].charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, 60);
+          } else {
+            setTimeout(() => typeWriter(index + 1), 1000);
+          }
+        }
+        typeChar();
+      } else {
+        // Tambahkan tanda tangan di akhir
+        setTimeout(() => {
+          const signature = document.createElement("div");
+          signature.classList.add("signature");
+          signature.textContent = signatureText;
+          container.appendChild(signature);
+        }, 1200);
+      }
+    }
+  </script>
+</body>
+</html>
